@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="MainApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="MainApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="MainApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="MainApp" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mínim EA</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+    <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+
+<div class="container" ng-controller="studentController">
+
+    <div class="jumbotron text-center" ng-prueba>
+        <h1>Número d'estudiants<span class="label label-success">{{ students.length }}</span></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-1">
+            <table class="table table-striped">
+                <tr class="info">
+                    <td>Nom</td>
+                    <td>Adreça</td>
+                    <td>Número</td>
+                    <td>Nom</td>
+                </tr>
+                <tr ng-repeat="student in students" ng-click="selectStudent(student)">
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.address }}</td>
+                    <td>{{ student.phones.name }}</td>
+                    <td>{{ student.phones.number }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1 text-center">
+            <form name="myForm">
+                <div class="form-group">
+                    <input type="text" class="form-control input-lg text-center" placeholder="Nom"
+                           ng-model="newStudent.name" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Adreça"
+                           ng-model="newStudent.address" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Tipus"
+                           ng-model="newStudent.phone.name" required>
+                    <br>
+                    <input type="text" class="form-control input-lg text-center" placeholder="Número"
+                           ng-model="newStudent.phone.number" required>
+                </div>
+
+                <!-- Acciones que podemos realizar en el formulario -->
+                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarStudent()"
+                        ng-disabled="myForm.$invalid">Registrar
+                </button>
+                <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarStudent(newStudent)"
+                        ng-disabled="!newStudent.name || !newStudent.address || !newStudent.phone.number || !newStudent.phone.name || !selected">
+                    Modificar
+                </button>
+                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudent(newStudent)"
+                        ng-disabled="!newStudent.name || !newStudent.address || !newStudent.phone.number || !newStudent.phone.name || !selected">
+                    Borrar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container" ng-controller="subjectController">
+
+    <div class="jumbotron text-center">
+        <h1>Número d'assignatures: <span class="label label-success">{{ subjects.length }}</span></h1>
+    </div>
+
+    <div class="row">
+
+        <table class="table table-striped">
+            <tr class="info">
+                <td>Nom</td>
+                <td>Alumne</td>
+            </tr>
+            <tr ng-repeat="subject in subjects" ng-click="selectSubject(subject)">
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.students}}</td>
+            </tr>
+        </table>
+        <label>Filtra per nom:</label> <input type="text" class="form-control input-lg text-center"
+                                                  placeholder="Alumno" ng-model="newSubject.students">
+        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubject()">Filtrar</button>
+
+        <label>Filtra per període:</label> <input type="number" class="form-control input-lg text-center"
+                                                  placeholder="Assignatura" ng-model="newSubject.students">
+        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyPeriod()">Filtrar per període</button>
+
+        <label>Filtra alfabèticament:</label> <input type="text" class="form-control input-lg text-center"
+                                                  placeholder="Assignatura" ng-model="newSubject.students">
+        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyName()">Filtrar alfabèticament</button>
+
+        <label>Filtra per nombre d'alumnes:</label> <input type="text" class="form-control input-lg text-center"
+                                                  placeholder="Assignatura" ng-model="newSubject.students">
+        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyNumber()">Filtrar per número d'alumnes</button>
+
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-1 text-center">
+
+        <form name="miForm">
+            <div class="form-group">
+                <input type="text" class="form-control input-lg text-center" placeholder="Assignatura"
+                       ng-model="newSubject.name" required>
+                <br>
+                <input type="text" class="form-control input-lg text-center" placeholder="Estudiant"
+                       ng-model="newSubject.students" required>
+            </div>
+
+            <!-- Acciones que podemos realizar en el formulario -->
+            <button type="submit" class="btn btn-success btn-lg" ng-click="registrarSubject()"
+                    ng-disabled="miForm.$invalid">Registrar
+            </button>
+            <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarSubject(newSubject)"
+                    ng-disabled="!newSubject.name || !newSubject.students || !selected">Modificar
+            </button>
+            <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarSubject(newSubject)"
+                    ng-disabled="!newSubject.name || !newSubject.students || !selected">Borrar
+            </button>
+        </form>
+    </div>
+</div>
+</div>
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- In production use:
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+-->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="core_student.js"></script>
+<script src="core_subject.js"></script>
+</body>
+</html>
