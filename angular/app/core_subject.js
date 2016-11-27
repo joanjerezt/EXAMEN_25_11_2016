@@ -13,9 +13,26 @@ MainApp.controller('core_subject',function($scope, $http) {
         $scope.newSubject = {};
     };
 
-    // Obtenemos todos los datos de la base de datos de los jefes
+    /*** OK ***/
+
     $http.get(API + '/api/subjects').success(function (data) {
         $scope.subjects = data;
+
+        /** for(i=0; i++; i=5) {
+            var numero = $scope.subjects[i].periode;
+            var quadrimestre = numero.slice(0, 1);
+            var any = numero.slice(1, 5);
+            if (quadrimestre == 1) {
+                quadrimestre = 'Primavera';
+            }
+            if (quadrimestre == 2) {
+                quadrimestre = 'Tardor';
+            }
+            else {
+                quadrimestre = 'Error';
+            }
+            $scope.subjects[i].periode = quadrimestre + ' ' + any;
+        } **/
     })
         .error(function (data) {
             console.log('Error: ' + data);
@@ -26,7 +43,7 @@ MainApp.controller('core_subject',function($scope, $http) {
 
     $scope.filterSubject = function (res) {
 
-        $http.post('/api/sub', $scope.newSubject)
+        $http.get(API + '/api/subjects/' + $scope.newSubject.students)
             .success(function (data) {
                 if (data == false) {
                     alert("L'alumne no té cap assignatura");
@@ -42,12 +59,36 @@ MainApp.controller('core_subject',function($scope, $http) {
 
     };
 
-    // Función para filtrar por periodo
+    /*** OK ***/
 
+    // Función para filtrar por nombre de asignatura
+
+    $scope.filterSubject = function (res) {
+
+        $http.get(API + '/api/subjects/name/' + $scope.newSubject.name)
+            .success(function (data) {
+                if (data == false) {
+                    alert("No hi ha cap assignatura amb aquest nom");
+                }
+                else {
+                    $scope.subjects = data;
+                    $scope.cleanall(); // Borramos los datos del formulario
+                }
+            })
+            .error(function (data) {
+                console.log('Error: ' + data);
+            });
+
+    };
+    
+
+    /*** OK ***/
+
+    // Función para filtrar por periodo
 
     $scope.filterSubjectbyPeriod = function (res) {
 
-        $http.get('/api/subjectsbyperiodo', $scope.newSubject)
+        $http.get(API + '/api/subjects/period/' + $scope.newSubject.periode)
             .success(function (data) {
                 if (data == false) {
                     alert("No hi ha cap assignatura en aquest període");
@@ -64,7 +105,6 @@ MainApp.controller('core_subject',function($scope, $http) {
     };
 
     // Función para filtrar alfabéticamente
-
 
     $scope.filterSubjectbyName = function (res) {
 
@@ -103,39 +143,31 @@ MainApp.controller('core_subject',function($scope, $http) {
 
     };
 
+    /*** OK ***/
 
     // Función para registrar una asignatura
 
-
     $scope.registrarSubject = function (res) {
 
-        $http.post('/api/subject', $scope.newSubject)
+        $http.post(API + '/api/subjects', $scope.newSubject)
             .success(function (data) {
-
-                if (data == false) {
-                    alert("L'alumne no ha sigut creat")
-                }
-                else if (data == "repetido") {
-                    alert("L'alumne ja ha sigut afegit a aquesta assignatura")
-                }
-                else {
                     $scope.cleanall(); // Borramos los datos del formulario
                     $scope.subjects = data;
-                }
             })
             .error(function (data) {
                 $scope.cleanall(); // Borramos los datos del formulario
                 alert(data);
-                //console.log('Error: ' + data);
+                console.log('Error: ' + data);
             });
 
     };
 
+    /*** OK ***/
+
     // Función para editar los datos de una asignatura
 
-
     $scope.modificarSubject = function (newSubject) {
-        $http.put('/api/subject/' + $scope.newSubject._id, $scope.newSubject)
+        $http.put(API + '/api/subjects/' + $scope.newSubject._id, $scope.newSubject)
             .success(function (data) {
                 $scope.cleanall(); // Borramos los datos del formulario
                 $scope.subjects = data;
@@ -146,9 +178,11 @@ MainApp.controller('core_subject',function($scope, $http) {
             });
     };
 
+    /*** OK ***/
+
     // Función que borra un objeto asignatura conocido su id
     $scope.borrarSubject = function (newSubject) {
-        $http.delete('/api/subject/' + $scope.newSubject._id)
+        $http.delete(API + '/api/subjects/' + $scope.newSubject._id)
             .success(function (data) {
                 $scope.cleanall();
                 $scope.subjects = data;

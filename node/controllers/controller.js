@@ -85,6 +85,50 @@ exports.findStudentById = function (req, res) {
     });
 };
 
+/*** PHONE ***/
+
+/*** OK ***/
+
+exports.setPhone = function (req, res){
+
+    var query = {_id: req.params.id};
+    var update = {$addToSet : {"phones" :{type: req.body.type, number: req.body.number}}};
+    var options = {};
+
+    studentModel.findOneAndUpdate(query, update, options, function(err, student) {
+        if (err) {
+            res.send(err);
+        }
+        if(student){
+            Student.findById(student._id).populate('phones').exec().then(function(err, student) {
+                if (err)
+                    res.send(err)
+                res.send(student);
+            });
+        }
+    });
+};
+
+/*** OK ***/
+
+exports.removePhone = function (req, res){
+
+var query = {_id: req.params.id};
+var update = {$pull : {"phones":{ _id: req.params.phone_id}}};
+var options = {};
+Student.findOneAndUpdate(query, update, options, function(err, student) {
+    if (err) {
+        res.send(err);
+    }
+    if(student){
+        Student.findById(student._id).populate('phones').exec().then(function(err, student) {
+            if (err)
+                res.send(err)
+            res.send(student);
+        });
+    }
+});
+};
 
 /**** SUBJECTS ****/
 
@@ -112,6 +156,42 @@ exports.setSubject = function (req, res) {
         });
     });
 };
+
+/*** OK ***/
+
+exports.removeSubject = function (req, res) {
+    subjectModel.remove({_id: req.params.id}, function (err, subjects) {
+        if (err)
+            res.send(err);
+
+        subjectModel.find(function (err, subjects) {
+            if (err)
+                res.send(err)
+            res.json(subjects);
+        });
+    });
+}
+
+/*** OK ***/
+
+exports.updateSubject = function (req, res) {
+    subjectModel.update({_id: req.params.id},
+        {
+            $set: {
+                name: req.body.name,
+                periode: req.body.periode
+            }
+        },
+        function (err, fijo) {
+            if (err)
+                res.send(err);
+            subjectModel.find(function (err, student) {
+                if (err)
+                    res.send(err)
+                res.json(student);
+            });
+        });
+}
 
 /*** OK ***/
 

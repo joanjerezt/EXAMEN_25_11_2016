@@ -56,7 +56,10 @@ apiRoutes.route('/students')
 apiRoutes.route('/students/:id')
     .get(ctrl.findStudentById)
     .delete (ctrl.removeStudent)
+    .post(ctrl.setPhone)
     .put(ctrl.updateStudent);
+apiRoutes.route('/students/:id/:phone_id')
+    .delete(ctrl.removePhone);
 
 /*** SUBJECTS ***/
 
@@ -65,7 +68,9 @@ apiRoutes.route('/subjects')
     .post(ctrl.setSubject);
 
 apiRoutes.route('/subjects/:id')
-    .get(ctrl.findSubjectById);
+    .get(ctrl.findSubjectById)
+    .delete(ctrl.removeSubject)
+    .put(ctrl.updateSubject);
 
 apiRoutes.route('/subjects/name/:name')
     .get(ctrl.filterSubjectbyName);

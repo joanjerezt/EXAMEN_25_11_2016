@@ -22,7 +22,7 @@
 
 <div class="container" ng-controller="core_student">
 
-    <div class="jumbotron text-center">
+    <div class="starter-template">
         <h1><span class="label label-success">{{ students.length }}</span> estudiant/s</h1>
     </div>
 
@@ -44,6 +44,7 @@
             </table>
         </div>
         <div class="col-sm-4 col-sm-offset-1 text-center">
+            <h2>Administrar alumnes</h2>
             <form name="myForm">
                 <div class="form-group">
                     <input type="text" class="form-control input-lg text-center" placeholder="Nom"
@@ -52,6 +53,25 @@
                     <input type="text" class="form-control input-lg text-center" placeholder="Adreça"
                            ng-model="newStudent.address" required>
                     <br>
+                </div>
+
+                <!-- Acciones que podemos realizar en el formulario -->
+                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarStudent()"
+                        ng-disabled="myForm.$invalid">Registrar
+                </button>
+                <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarStudent(newStudent)"
+                        ng-disabled="!newStudent.name || !newStudent.address || !selected">
+                    Modificar
+                </button>
+                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudent(newStudent)"
+                        ng-disabled="!newStudent.name || !newStudent.address || !selected">
+                    Esborrar
+                </button>
+            </form>
+
+            <h2>Telèfons</h2>
+            <form name="myForm2">
+                <div class="form-group">
                     <input type="text" class="form-control input-lg text-center" placeholder="Tipus"
                            ng-model="newStudent.type" required>
                     <br>
@@ -60,24 +80,23 @@
                 </div>
 
                 <!-- Acciones que podemos realizar en el formulario -->
-                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarStudent()"
-                        ng-disabled="myForm.$invalid">Registrar
+                <button type="submit" class="btn btn-success btn-lg" ng-click="registrarPhone()"
+                        ng-disabled="myForm2.$invalid">Registrar
                 </button>
-                <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarStudent(newStudent)"
-                        ng-disabled="!newStudent.name || !newStudent.address || !newStudent.phone.number || !newStudent.phone.name || !selected">
-                    Modificar
                 </button>
-                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudent(newStudent)"
-                        ng-disabled="!newStudent.name || !newStudent.address || !newStudent.phone.number || !newStudent.phone.name || !selected">
+                <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPhone(newStudent)"
+                        ng-disabled="!newStudent.phone.number || !newStudent.phone.type || !selected">
                     Esborrar
                 </button>
             </form>
+
+
         </div>
     </div>
 </div>
 <div class="container" ng-controller="core_subject">
 
-    <div class="jumbotron text-center">
+    <div class="starter-template">
         <h1><span class="label label-success">{{ subjects.length }}</span> assignatura/es</h1>
     </div>
 
@@ -86,40 +105,53 @@
         <table class="table table-striped">
             <tr class="info">
                 <td>Nom</td>
-                <td>Alumne</td>
+                <td>Període</td>
+                <td>Alumnes</td>
             </tr>
             <tr ng-repeat="subject in subjects" ng-click="selectSubject(subject)">
                 <td>{{ subject.name }}</td>
+                <td>{{subject.periode}}</td>
                 <td>{{ subject.students}}</td>
             </tr>
         </table>
-        <label>Filtra per nom:</label> <input type="text" class="form-control input-lg text-center"
-                                                  placeholder="Alumno" ng-model="newSubject.students">
-        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubject()">Filtrar</button>
-
-        <label>Filtra per període:</label> <input type="number" class="form-control input-lg text-center"
-                                                  placeholder="Assignatura" ng-model="newSubject.students">
-        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyPeriod()">Filtrar per període</button>
-
-        <label>Filtra alfabèticament:</label> <input type="text" class="form-control input-lg text-center"
-                                                  placeholder="Assignatura" ng-model="newSubject.students">
-        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyName()">Filtrar alfabèticament</button>
-
-        <label>Filtra per nombre d'alumnes:</label> <input type="text" class="form-control input-lg text-center"
-                                                  placeholder="Assignatura" ng-model="newSubject.students">
-        <button type="submit" class="btn btn-success btn-lg" ng-click="filterSubjectbyNumber()">Filtrar per número d'alumnes</button>
 
     </div>
+        <div class="col-sm-6 col-sm-offset-1 text-left">
+        <label>Filtra per nom:</label> <input type="text" class="form-control input-lg text-center"
+                                                  placeholder="Nom de l'assignatura" ng-model="newSubject.name">
+        <button type="submit" class="btn btn-success" ng-click="filterSubject()">Filtrar</button><br>
 
-    <div class="col-sm-4 col-sm-offset-1 text-center">
+        <label>Filtra per període:</label> <input type="number" class="form-control input-lg text-center"
+                                                  placeholder="Període" ng-model="newSubject.periode">
+            <button type="submit" class="btn btn-success" ng-click="filterSubjectbyPeriod()">Filtrar per període
+            </button>
+            <br>
+            <table>
+                <tr>
+                    <td><label>Ordena alfabèticament</label>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-success" ng-click="filterSubjectbyName()">Acceptar</button>
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Ordena per nombre d'alumnes</label></td>
+                    <td><button type="submit" class="btn btn-success" ng-click="filterSubjectbyNumber()">Acceptar</button></td>
+                </tr>
+            </table>
+        </div>
+
+    <div class="col-sm-4 col-sm-offset-1 text-right">
 
         <form name="miForm">
             <div class="form-group">
                 <input type="text" class="form-control input-lg text-center" placeholder="Assignatura"
                        ng-model="newSubject.name" required>
                 <br>
-                <input type="text" class="form-control input-lg text-center" placeholder="Estudiant"
-                       ng-model="newSubject.students" required>
+                <input type="number" class="form-control input-lg text-center" placeholder="Periode"
+                       ng-model="newSubject.periode" required>
+                <br>
             </div>
 
             <!-- Acciones que podemos realizar en el formulario -->
@@ -127,10 +159,27 @@
                     ng-disabled="miForm.$invalid">Registrar
             </button>
             <button type="submit" class="btn btn-warning btn-lg" ng-click="modificarSubject(newSubject)"
-                    ng-disabled="!newSubject.name || !newSubject.students || !selected">Modificar
+                    ng-disabled="!newSubject.name || !newSubject.periode || !selected">Modificar
             </button>
             <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarSubject(newSubject)"
-                    ng-disabled="!newSubject.name || !newSubject.students || !selected">Borrar
+                    ng-disabled="!newSubject.name || !newSubject.periode || !selected">Esborrar
+            </button>
+        </form>
+        <h2>Matrícula d'alumnes</h2>
+        <form name="myForm2">
+            <div class="form-group">
+                <input type="text" class="form-control input-lg text-center" placeholder="Alumne"
+                       ng-model="newSubject.students">
+            </div>
+
+            <!-- Acciones que podemos realizar en el formulario -->
+            <button type="submit" class="btn btn-success btn-lg" ng-click="registrarStudentinSubject()"
+                    ng-disabled="myForm2.$invalid">Registrar
+            </button>
+            </button>
+            <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudentinSubject(newStudent)"
+                    ng-disabled="!newSubject.name || !newSubject.periode || !newSubject.student || !selected">
+                Esborrar
             </button>
         </form>
     </div>
@@ -147,5 +196,7 @@
 <script type="application/javascript" src="bower_components/angular-route/angular-route.js"></script>
 <script type="application/javascript" src="core_student.js"></script>
 <script type="application/javascript" src="core_subject.js"></script>
+
+
 </body>
 </html>

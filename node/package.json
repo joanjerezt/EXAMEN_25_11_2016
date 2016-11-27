@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "main": "servidor.js",
   "author": "Joan Jerez",
+  "description": "A starter project for Node",
+  "repository": "",
+  "license": "MIT",
   "scripts": {
+    "prestart": "npm install",
     "start": "node servidor.js"
   },
   "dependencies": {

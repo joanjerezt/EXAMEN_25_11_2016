@@ -19,10 +19,10 @@ MainApp.controller('core_student',function($scope, $http){
             console.log('Error: ' + data);
         });
 
-    /** TEST **/
+    /** OK? **/
 
-    $scope.registrarPhone = function (res) {
-        $http.post(API+ '/api/students/' + $scope.newStudent._id)
+    $scope.registrarPhone = function (newStudent) {
+        $http.put(API+ '/api/students/' + $scope.newStudent._id, $scope.newStudent)
             .success(function (data) {
                 if (data == false) {
                     alert("El número de telèfon no es vàlid");
@@ -38,10 +38,10 @@ MainApp.controller('core_student',function($scope, $http){
 
     }
 
-    /** TEST ***/
+    /** OK? ***/
 
     $scope.borrarPhone = function (newStudent) {
-        $http.delete(API + '/api/students/' + $scope.newStudent._id)
+        $http.delete(API + '/api/students/' + $scope.newStudent._id + '/' + $scope.newStudent.phones._id)
             .success(function (data) {
                 $scope.cleanall();
                 $scope.students = data;
@@ -59,22 +59,17 @@ MainApp.controller('core_student',function($scope, $http){
         if (confirm("Ets " + $scope.newStudent.name + "?")) {
             $http.post(API + '/api/students', $scope.newStudent)
                 .success(function (data) {
-                    if (data == false) {
-                        alert("El número de telèfon no es vàlid");
-                    }
-                    else {
-                        $scope.cleanall(); // Borramos los datos del formulario
-                        $scope.students = data;
-                    }
+                    $scope.cleanall(); // Borramos los datos del formulario
+                    $scope.students = data;
                 })
                 .error(function (data) {
                     console.log('Error: ' + data);
                 });
         }
-
+    location.reload(); // soluciona un problema con la tabla
     };
 
-    /** OK? **/
+    /** OK **/
 
     $scope.modificarStudent = function (newStudent) {
         $http.put(API + '/api/students/' + $scope.newStudent._id, $scope.newStudent)
@@ -88,7 +83,8 @@ MainApp.controller('core_student',function($scope, $http){
             });
     };
 
-    // Función que borra un objeto student conocido su id
+    /** OK **/
+
     $scope.borrarStudent = function (newStudent) {
         $http.delete(API + '/api/students/' + $scope.newStudent._id)
             .success(function (data) {
