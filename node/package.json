@@ -1,10 +1,10 @@
 {
-  "name": "angular",
+  "type": "angular",
   "version": "0.0.1",
-  "main": "server.js",
+  "main": "servidor.js",
   "author": "Joan Jerez",
   "scripts": {
-    "start": "node server.js"
+    "start": "node servidor.js"
   },
   "dependencies": {
     "body-parser": "latest",
