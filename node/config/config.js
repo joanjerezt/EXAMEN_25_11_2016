@@ -3,6 +3,6 @@
  */
 
 module.exports = {
-    'database': 'mongodb://localhost/pruna',
+    'database': 'mongodb://localhost/school',
     "port": process.env.PORT || 3000
 };

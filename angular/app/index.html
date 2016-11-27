@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script type="application/javascript" src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
 
-<div class="container" ng-controller="studentController">
+<div class="container" ng-controller="core_student">
 
-    <div class="jumbotron text-center" ng-prueba>
-        <h1>Número d'estudiants<span class="label label-success">{{ students.length }}</span></h1>
+    <div class="jumbotron text-center">
+        <h1><span class="label label-success">{{ students.length }}</span> estudiant/s</h1>
     </div>
 
     <div class="row">
@@ -32,14 +32,14 @@
                 <tr class="info">
                     <td>Nom</td>
                     <td>Adreça</td>
+                    <td>Tipus</td>
                     <td>Número</td>
-                    <td>Nom</td>
                 </tr>
                 <tr ng-repeat="student in students" ng-click="selectStudent(student)">
                     <td>{{ student.name }}</td>
                     <td>{{ student.address }}</td>
-                    <td>{{ student.phones.name }}</td>
-                    <td>{{ student.phones.number }}</td>
+                    <td><div ng-repeat="phone in student.phones">{{ phone.type }}<br></div></td>
+                    <td><div ng-repeat="phone in student.phones">{{ phone.number }}<br></div></td>
                 </tr>
             </table>
         </div>
@@ -53,10 +53,10 @@
                            ng-model="newStudent.address" required>
                     <br>
                     <input type="text" class="form-control input-lg text-center" placeholder="Tipus"
-                           ng-model="newStudent.phone.name" required>
+                           ng-model="newStudent.type" required>
                     <br>
                     <input type="text" class="form-control input-lg text-center" placeholder="Número"
-                           ng-model="newStudent.phone.number" required>
+                           ng-model="newStudent.number" required>
                 </div>
 
                 <!-- Acciones que podemos realizar en el formulario -->
@@ -69,16 +69,16 @@
                 </button>
                 <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudent(newStudent)"
                         ng-disabled="!newStudent.name || !newStudent.address || !newStudent.phone.number || !newStudent.phone.name || !selected">
-                    Borrar
+                    Esborrar
                 </button>
             </form>
         </div>
     </div>
 </div>
-<div class="container" ng-controller="subjectController">
+<div class="container" ng-controller="core_subject">
 
     <div class="jumbotron text-center">
-        <h1>Número d'assignatures: <span class="label label-success">{{ subjects.length }}</span></h1>
+        <h1><span class="label label-success">{{ subjects.length }}</span> assignatura/es</h1>
     </div>
 
     <div class="row">
@@ -135,7 +135,6 @@
         </form>
     </div>
 </div>
-</div>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -144,9 +143,9 @@
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
 -->
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="core_student.js"></script>
-<script src="core_subject.js"></script>
+<script type="application/javascript" src="bower_components/angular/angular.js"></script>
+<script type="application/javascript" src="bower_components/angular-route/angular-route.js"></script>
+<script type="application/javascript" src="core_student.js"></script>
+<script type="application/javascript" src="core_subject.js"></script>
 </body>
 </html>

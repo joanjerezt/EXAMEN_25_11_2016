@@ -1,3 +1,7 @@
+/**
+ * Created by juan on 25/11/16.
+ */
+
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
@@ -8,6 +12,7 @@ morgan = require('morgan');
 var config = require('./config/config');
 
 mongoose.Promise = global.Promise;
+
 /**Connection to local MongoDB**/
 mongoose.connect(config.database, function (err) {
     if (err) throw err;
@@ -23,8 +28,8 @@ app.use(methodOverride());
 app.use(morgan('dev'));
 
 /** Import Models and controllers**/
-var studentMdl = require('./models/studentModel')(app, mongoose);
-var subjectMdl = require('./models/subjectModel')(app, mongoose);
+var studentModel = require('./models/studentModel')(app, mongoose);
+var subjectModel = require('./models/subjectModel')(app, mongoose);
 var ctrl = require('./controllers/controller');
 
 app.use(express.static(__dirname + '/angular'));
@@ -42,14 +47,18 @@ app.use(function (req, res, next) {
 
 var apiRoutes = express.Router();
 
+/*** STUDENTS ***/
+
 apiRoutes.route('/students')
     .get(ctrl.getStudent)
-    .post(ctrl.setStudent)
+    .post(ctrl.setStudent);
+
+apiRoutes.route('/students/:id')
+    .get(ctrl.findStudentById)
     .delete (ctrl.removeStudent)
     .put(ctrl.updateStudent);
 
-apiRoutes.route('/students/:id')
-    .get(ctrl.findStudentById);
+/*** SUBJECTS ***/
 
 apiRoutes.route('/subjects')
     .get(ctrl.getSubjects)
@@ -58,11 +67,11 @@ apiRoutes.route('/subjects')
 apiRoutes.route('/subjects/:id')
     .get(ctrl.findSubjectById);
 
-apiRoutes.route('/sub')
-    .post(ctrl.filterSubjectbyName);
+apiRoutes.route('/subjects/name/:name')
+    .get(ctrl.filterSubjectbyName);
 
-apiRoutes.route('/subjects/:periode')
-    .post(ctrl.filterSubjectbyPeriod);
+apiRoutes.route('/subjects/period/:periode')
+    .get(ctrl.filterSubjectbyPeriod);
 
 apiRoutes.route('/subjects/:id/addstudent')
     .post(ctrl.addStudentToSubject);
