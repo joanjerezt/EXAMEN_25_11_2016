@@ -30,16 +30,18 @@
         <div class="col-sm-6 col-sm-offset-1">
             <table class="table table-striped">
                 <tr class="info">
+                    <td>ID</td>
                     <td>Nom</td>
                     <td>Adreça</td>
                     <td>Tipus</td>
                     <td>Número</td>
                 </tr>
                 <tr ng-repeat="student in students" ng-click="selectStudent(student)">
+                    <td>{{student._id}}</td>
                     <td>{{ student.name }}</td>
                     <td>{{ student.address }}</td>
-                    <td><div ng-repeat="phone in student.phones">{{ phone.type }}<br></div></td>
-                    <td><div ng-repeat="phone in student.phones">{{ phone.number }}<br></div></td>
+                    <td><div ng-repeat="phone in student.phones" ng-click="selectPhone(phone)">{{ phone.type }}<br></div></td>
+                    <td><div ng-repeat="phone in student.phones" ng-click="selectPhone(phone)">{{ phone.number }}<br></div></td>
                 </tr>
             </table>
         </div>
@@ -67,10 +69,7 @@
                         ng-disabled="!newStudent.name || !newStudent.address || !selected">
                     Esborrar
                 </button>
-            </form>
-
-            <h2>Telèfons</h2>
-            <form name="myForm2">
+                <h2>Telèfons</h2>
                 <div class="form-group">
                     <input type="text" class="form-control input-lg text-center" placeholder="Tipus"
                            ng-model="newStudent.type" required>
@@ -85,13 +84,11 @@
                 </button>
                 </button>
                 <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarPhone(newStudent)"
-                        ng-disabled="!newStudent.phone.number || !newStudent.phone.type || !selected">
+                        ng-disabled="!newStudent.name || !newStudent.address || !newStudent.number || !newStudent.type || !selected">
                     Esborrar
                 </button>
+
             </form>
-
-
-        </div>
     </div>
 </div>
 <div class="container" ng-controller="core_subject">
@@ -106,17 +103,45 @@
             <tr class="info">
                 <td>Nom</td>
                 <td>Període</td>
-                <td>Alumnes</td>
+                <td>Núm. d'alumnes</td>
             </tr>
             <tr ng-repeat="subject in subjects" ng-click="selectSubject(subject)">
                 <td>{{ subject.name }}</td>
                 <td>{{subject.periode}}</td>
-                <td>{{ subject.students}}</td>
+                <td>{{subject.students.length}}</td>
             </tr>
         </table>
 
     </div>
-        <div class="col-sm-6 col-sm-offset-1 text-left">
+    <div class="col-sm-3 text-left">
+        <div>
+            <table class="table table-striped">
+                <tr  class="info">
+                    <td>
+                        Nom de l'assignatura
+                    </td>
+                    <td>
+                        Període
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{newSubject.name }}</td>
+                    <td>{{newSubject.periode}}</td>
+                </tr>
+            </table>
+            <table  class="table table-striped">
+                <tr class="info">
+                    <td>Llista d'alumnes</td>
+                </tr>
+                <tr ng-repeat="student2 in newSubject.students" ng-click="selectStudent(student2)">
+                    <td>{{student2}}</td>
+                </tr>
+                <!-- <button type="submit" class="btn btn-success" ng-click="resolveid()">Mostrar noms</button> -->
+            </table>
+
+        </div>
+    </div>
+        <div class="col-sm-4 text-left">
         <label>Filtra per nom:</label> <input type="text" class="form-control input-lg text-center"
                                                   placeholder="Nom de l'assignatura" ng-model="newSubject.name">
         <button type="submit" class="btn btn-success" ng-click="filterSubject()">Filtrar</button><br>
@@ -128,8 +153,7 @@
             <br>
             <table>
                 <tr>
-                    <td><label>Ordena alfabèticament</label>
-                    </td>
+                    <td><label>Ordena alfabèticament</label></td>
                     <td>
                         <button type="submit" class="btn btn-success" ng-click="filterSubjectbyName()">Acceptar</button>
                         <br>
@@ -142,7 +166,7 @@
             </table>
         </div>
 
-    <div class="col-sm-4 col-sm-offset-1 text-right">
+    <div class="col-sm-4 text-right">
 
         <form name="miForm">
             <div class="form-group">
@@ -168,17 +192,16 @@
         <h2>Matrícula d'alumnes</h2>
         <form name="myForm2">
             <div class="form-group">
-                <input type="text" class="form-control input-lg text-center" placeholder="Alumne"
-                       ng-model="newSubject.students">
+                <input type="text" class="form-control input-lg text-center" placeholder="ID Alumne"
+                       ng-model="newStudent">
             </div>
 
             <!-- Acciones que podemos realizar en el formulario -->
-            <button type="submit" class="btn btn-success btn-lg" ng-click="registrarStudentinSubject()"
+            <button type="submit" class="btn btn-success btn-lg" ng-click="addStudentToSubject(newStudent)"
                     ng-disabled="myForm2.$invalid">Registrar
             </button>
-            </button>
-            <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudentinSubject(newStudent)"
-                    ng-disabled="!newSubject.name || !newSubject.periode || !newSubject.student || !selected">
+            <button type="submit" class="btn btn-danger btn-lg" ng-click="borrarStudentFromSubject(newStudent)"
+                    ng-disabled="!newSubject.name || !newSubject.periode || !newStudent || !selected">
                 Esborrar
             </button>
         </form>

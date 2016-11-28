@@ -17,22 +17,6 @@ MainApp.controller('core_subject',function($scope, $http) {
 
     $http.get(API + '/api/subjects').success(function (data) {
         $scope.subjects = data;
-
-        /** for(i=0; i++; i=5) {
-            var numero = $scope.subjects[i].periode;
-            var quadrimestre = numero.slice(0, 1);
-            var any = numero.slice(1, 5);
-            if (quadrimestre == 1) {
-                quadrimestre = 'Primavera';
-            }
-            if (quadrimestre == 2) {
-                quadrimestre = 'Tardor';
-            }
-            else {
-                quadrimestre = 'Error';
-            }
-            $scope.subjects[i].periode = quadrimestre + ' ' + any;
-        } **/
     })
         .error(function (data) {
             console.log('Error: ' + data);
@@ -80,7 +64,6 @@ MainApp.controller('core_subject',function($scope, $http) {
             });
 
     };
-    
 
     /*** OK ***/
 
@@ -145,6 +128,33 @@ MainApp.controller('core_subject',function($scope, $http) {
 
     /*** OK ***/
 
+    $scope.addStudentToSubject = function (id) {
+        $scope.newStudent = {
+            student_id: id
+        };
+        $http.post(API + '/api/subjects/' + $scope.newSubject._id + '/student/' , $scope.newStudent)
+            .success(function(data){
+                $scope.subject = data;
+            })
+            .error(function(data){
+                console.log('Error:' + data);
+            });
+    };
+
+    /*** OK ***/
+
+    $scope.borrarStudentFromSubject = function (id) {
+        $http.delete(API + '/api/subjects/' + $scope.newSubject._id + '/student/' + id)
+            .success(function(data){
+                $scope.subject = data;
+            })
+            .error(function(data){
+                console.log('Error:' + data);
+            });
+    };
+
+    /*** OK ***/
+
     // Función para registrar una asignatura
 
     $scope.registrarSubject = function (res) {
@@ -198,5 +208,11 @@ MainApp.controller('core_subject',function($scope, $http) {
         $scope.newSubject = subject;
         $scope.selected = true;
         console.log($scope.newSubject, $scope.selected);
+    };
+
+    $scope.selectStudent = function (student) {
+        $scope.newStudent = student;
+        $scope.selected = true;
+        console.log($scope.newStudent, $scope.selected);
     };
 });

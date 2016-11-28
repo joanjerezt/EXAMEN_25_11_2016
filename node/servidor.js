@@ -78,8 +78,10 @@ apiRoutes.route('/subjects/name/:name')
 apiRoutes.route('/subjects/period/:periode')
     .get(ctrl.filterSubjectbyPeriod);
 
-apiRoutes.route('/subjects/:id/addstudent')
+apiRoutes.route('/subjects/:id/student')
     .post(ctrl.addStudentToSubject);
+apiRoutes.route('/subjects/:id/student/:student_id')
+    .delete(ctrl.removeStudentFromSubject);
 
 app.use('/api', apiRoutes);
 

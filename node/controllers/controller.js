@@ -92,7 +92,7 @@ exports.findStudentById = function (req, res) {
 exports.setPhone = function (req, res){
 
     var query = {_id: req.params.id};
-    var update = {$addToSet : {"phones" :{type: req.body.type, number: req.body.number}}};
+    var update = {$addToSet : {phones :{type: req.body.type, number: req.body.number}}};
     var options = {};
 
     studentModel.findOneAndUpdate(query, update, options, function(err, student) {
@@ -100,7 +100,7 @@ exports.setPhone = function (req, res){
             res.send(err);
         }
         if(student){
-            Student.findById(student._id).populate('phones').exec().then(function(err, student) {
+            studentModel.findById(student._id).populate('phones').exec().then(function(err, student) {
                 if (err)
                     res.send(err)
                 res.send(student);
@@ -114,14 +114,14 @@ exports.setPhone = function (req, res){
 exports.removePhone = function (req, res){
 
 var query = {_id: req.params.id};
-var update = {$pull : {"phones":{ _id: req.params.phone_id}}};
+var update = {$pull : {phones:{ _id: req.params.phone_id}}};
 var options = {};
-Student.findOneAndUpdate(query, update, options, function(err, student) {
+studentModel.findOneAndUpdate(query, update, options, function(err, student) {
     if (err) {
         res.send(err);
     }
     if(student){
-        Student.findById(student._id).populate('phones').exec().then(function(err, student) {
+        studentModel.findById(student._id).populate('phones').exec().then(function(err, student) {
             if (err)
                 res.send(err)
             res.send(student);
@@ -206,6 +206,8 @@ exports.filterSubjectbyName = function (req, res){
     );
 }
 
+/*** OK *** /
+
 /* Filtro por periode en el que s’imparteix, p.ex “Tardor 2016”, “Primavera 2017”. */
 
 exports.filterSubjectbyPeriod = function (req, res){
@@ -219,7 +221,7 @@ exports.filterSubjectbyPeriod = function (req, res){
     );
 }
 
-/* Ver detalle de una asignatura */
+/** OK **/
 
 /**GET subject by subject._id**/
 exports.findSubjectById = function (req, res) {
@@ -233,34 +235,45 @@ exports.findSubjectById = function (req, res) {
         });
 };
 
+/*** OK ***/
+
 /**POST insert student into subject collection**/
 
 exports.addStudentToSubject = function (req, res) {
-    /**First add student to DB**/
-    var student = new studentModel({
-        name: req.body.name,
-        address: req.body.address,
-        phones: {
-            type: req.body.type,
-            number: req.body.number
+
+    var query = {_id: req.params.id};
+    var update = {$addToSet : {"students" : req.body.student_id}};
+    var options = {};
+    subjectModel.findOneAndUpdate(query, update, options, function(err, subject) {
+        if (err) {
+            res.send(err);
+        }
+        if(subject){
+            subjectModel.findById(subject._id).populate('students').exec().then(function(err, subject) {
+                if (err)
+                    res.send(err)
+                res.send(subject);
+            });
         }
     });
-    student.save(function (err, student) {
-        if (err) return res.send(500, err.message);
-        /**Using populate see here: https://alexanderzeitler.com/articles/mongoose-referencing-schema-in-properties-and-arrays/ **/
-        /**We insert the student inside the Subject collection**/
-        subjectModel.find({
-            _id: req.params.id
-        }, function (err, subjects) {
-            if (err) return res.send(500, err.message);
-            console.log("subjects:");
-            console.log(subjects);
-            var subject = subjects[0];
-            subject.students.push(student._id);
-            subject.save(function (err, subject) {
-                if (err) return res.send(500, err.message);
-                res.status(200).jsonp(subject);
+};
+
+/*** OK ***/
+
+exports.removeStudentFromSubject = function (req, res){
+    var query = {_id: req.params.id};
+    var update = {$pull : {"students" : req.params.student_id}};
+    var options = {};
+    subjectModel.findOneAndUpdate(query, update, options, function(err, subject) {
+        if (err) {
+            res.send(err);
+        }
+        if(subject){
+            subjectModel.findById(subject._id).populate('students').exec().then(function(err, subject) {
+                if (err)
+                    res.send(err)
+                res.send(subject);
             });
-        });
+        }
     });
 };

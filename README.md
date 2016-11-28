@@ -14,4 +14,16 @@ Executa: $ node start
 
 ## Funcionalitats
 
+✓ Básicas
 
+✓ listado de asignaturas 
+
+✓ ver detalle de una asignatura 
+
+✓ Ordenació per ordre alfabètic (nom) -per defecte-
+
+✓ Filtro por nombre
+
+✓ Filtro por periode en el que s’imparteix, p.ex “Tardor 2016”, “Primavera 2017”.
+
+x  Ordenació per nombre d’alumnes per assignatura
